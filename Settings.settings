@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SIClient" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="WholeScreenKeys" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Control+Shift+R</Value>
+    </Setting>
+    <Setting Name="WindowKeys" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Control+Shift+T</Value>
+    </Setting>
+    <Setting Name="CutKeys" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Control+Shift+Z</Value>
+    </Setting>
+    <Setting Name="Address" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://home.ondryaso.eu</Value>
+    </Setting>
+    <Setting Name="ResponseManagerName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">default</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

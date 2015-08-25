@@ -1,0 +1,28 @@
+﻿<Window x:Class="SIClient.RegionSelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SIClient"
+        mc:Ignorable="d"
+        Title="RegionSelectionWindow" AllowsTransparency="True"
+        WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Topmost="True" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp"
+        MouseMove="Window_MouseMove" Cursor="Cross" KeyDown="Window_KeyDown"
+        SizeToContent="Manual" SourceInitialized="Window_SourceInitialized">
+
+    <Window.Background>
+        <SolidColorBrush Color="#01000000" />
+    </Window.Background>
+
+    <Grid>
+        <Canvas x:Name="canvas">
+            <Rectangle x:Name="selectRectangle" StrokeThickness="1" Stroke="Black" Visibility="Hidden" />
+
+            <Border x:Name="magImgBorder" BorderBrush="Black" BorderThickness="1" Visibility="Hidden">
+                <Image x:Name="magImg" Visibility="Hidden" Width="100" Height="100"
+                   Stretch="Fill" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+            </Border>
+        </Canvas>
+    </Grid>
+</Window>

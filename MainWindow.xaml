@@ -1,0 +1,50 @@
+﻿<Window x:Class="SIClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nastavení J2" Height="190" Width="300"
+        KeyDown="Window_KeyDown" KeyUp="Window_KeyUp"
+        StateChanged="Window_StateChanged" Closed="Window_Closed"
+        ResizeMode="CanMinimize" DataContext="{StaticResource viewmodel}"
+        Icon="/icon.ico" Visibility="Hidden">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Grid.Column" Value="0" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Grid.Column" Value="1" />
+                <Setter Property="Padding" Value="4,4,4,4" />
+                <Setter Property="Background" Value="LightGray" />
+            </Style>
+        </Grid.Resources>
+
+        <TextBlock Grid.Row="0">Celá obrazovka</TextBlock>
+        <Button x:Name="wholeScreenBtn" Grid.Row="0" Click="btn_Click" Content="{Binding ScreenWholeScreenHotkey}" />
+        <TextBlock Grid.Row="1">Okno</TextBlock>
+        <Button x:Name="windowBtn" Grid.Row="1" Click="btn_Click" Content="{Binding ScreenWindowHotkey}" />
+        <TextBlock Grid.Row="2">Výřez</TextBlock>
+        <Button x:Name="cutBtn" Grid.Row="2" Click="btn_Click" Content="{Binding ScreenAreaHotkey}" />
+        <TextBlock Grid.Row="3">Adresa serveru</TextBlock>
+        <TextBox x:Name="addrTextBox" Grid.Row="3" Grid.Column="1" Text="{Binding ServerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,5,5,5" VerticalContentAlignment="Center" />
+        <TextBlock Grid.Row="4">Zapnout při spuštění</TextBlock>
+        <CheckBox Grid.Row="4" Grid.Column="1" IsChecked="{Binding RunOnStartup}"
+                  IsEnabled="{Binding RunOnStartupEnabled}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+    </Grid>
+</Window>

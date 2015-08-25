@@ -1,0 +1,16 @@
+﻿<Application x:Class="SIClient.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:SIClient"
+             xmlns:tb="http://www.hardcodet.net/taskbar"
+             Startup="Application_Startup"
+             Exit="Application_Exit"
+             StartupUri="MainWindow.xaml">
+
+    <Application.Resources>
+        <vm:ShowMainCommand x:Key="showcmd" />
+        <vm:MainWindowVM x:Key="viewmodel" x:Name="viewmodel" />
+        <tb:TaskbarIcon x:Key="notifyicon" IconSource="/icon.ico" ToolTipText="J2 Client" Visibility="Visible"
+                        DoubleClickCommand="{StaticResource ResourceKey=showcmd}" TrayBalloonTipClicked="LinkBalloonClicked" />
+    </Application.Resources>
+</Application>
