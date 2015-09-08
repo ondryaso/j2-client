@@ -50,11 +50,11 @@ namespace SIClient
 
         private void NotifyScreenshotDone(string name)
         {
-#if REL_HOME || DEBUG
+#if REL_HOME
             var link = (this.client.ServerAddress.Contains("10.0.0.40") ?
                     "http://home.ondryaso.eu/" : this.client.ServerAddress) + name;
 #else
-                var link = this.client.ServerAddress + name;
+            var link = this.client.ServerAddress + name;
 #endif
 
             Application.Current.Dispatcher.Invoke(() =>

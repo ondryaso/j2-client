@@ -73,9 +73,6 @@ namespace SIClient
                         if (p.showCmd == 3)
                         {
                             r.Top += 8;
-                            r.Left += 1;
-                            r.Bottom -= 1;
-                            r.Right -= 1;
                         }
 
                     r.Left += 7;

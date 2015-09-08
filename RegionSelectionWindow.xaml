@@ -9,6 +9,7 @@
         WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         Topmost="True" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp"
         MouseMove="Window_MouseMove" Cursor="Cross" KeyDown="Window_KeyDown"
+        Closing="Window_Closing"
         SizeToContent="Manual" SourceInitialized="Window_SourceInitialized">
 
     <Window.Background>
@@ -23,6 +24,13 @@
                 <Image x:Name="magImg" Visibility="Hidden" Width="100" Height="100"
                    Stretch="Fill" RenderOptions.BitmapScalingMode="NearestNeighbor" />
             </Border>
+
+            <Canvas x:Name="magImgCross">
+                <Line X1="6" X2="6" Y1="0" Y2="12"
+                      RenderOptions.BitmapScalingMode="NearestNeighbor" StrokeThickness="1" Stroke="Black" />
+                <Line X1="0" X2="12" Y1="6" Y2="6"
+                      RenderOptions.BitmapScalingMode="NearestNeighbor" StrokeThickness="1" Stroke="Black" />
+            </Canvas>
         </Canvas>
     </Grid>
 </Window>

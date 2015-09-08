@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -47,8 +48,10 @@ namespace SIClient
             if (this.selStarted)
             {
                 this.Hide();
-                this.RegionSelected?.Invoke((int)this.start.X, (int)this.start.Y,
-                    (int)this.local.X, (int)this.local.Y);
+                this.RegionSelected?.Invoke((int)(this.start.X > this.local.X ? this.local.X : this.start.X),
+                    (int)(this.start.Y > this.local.Y ? this.local.Y : this.start.Y),
+                    (int)(this.start.X > this.local.X ? this.start.X : this.local.X),
+                    (int)(this.start.Y > this.local.Y ? this.start.Y : this.local.Y));
                 this.Close();
             }
         }
@@ -84,18 +87,10 @@ namespace SIClient
 
             if (this.magnifying)
             {
-                if (this.lastMagHnd != IntPtr.Zero)
-                    NativeMethods.DeleteObject(this.lastMagHnd);
-
                 Canvas.SetLeft(this.magImgBorder, this.local.X + 10);
                 Canvas.SetTop(this.magImgBorder, this.local.Y + 10);
-
-                Bitmap dataBmp = new Bitmap(10, 10, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                this.scr.CopyScreen((int)this.local.X - 5, (int)this.local.Y - 5, ref dataBmp);
-
-                this.lastMagHnd = dataBmp.GetHbitmap();
-                this.magImg.Source = Imaging.CreateBitmapSourceFromHBitmap(this.lastMagHnd,
-                     IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                Canvas.SetLeft(this.magImgCross, this.local.X + 54);
+                Canvas.SetTop(this.magImgCross, this.local.Y + 54);
             }
         }
 
@@ -109,14 +104,42 @@ namespace SIClient
             if (e.Key == Key.M)
             {
                 this.magnifying = !this.magnifying;
+
                 this.magImg.Visibility = this.magnifying ? Visibility.Visible : Visibility.Hidden;
                 this.magImgBorder.Visibility = this.magImg.Visibility;
+                this.magImgCross.Visibility = this.magImg.Visibility;
+
+                if (this.magnifying)
+                {
+                    Task.Run(() =>
+                    {
+                        while (this.magnifying)
+                        {
+                            if (this.lastMagHnd != IntPtr.Zero)
+                                NativeMethods.DeleteObject(this.lastMagHnd);
+
+                            Bitmap dataBmp = new Bitmap(10, 10, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                            this.scr.CopyScreen((int)this.local.X - 5, (int)this.local.Y - 5, ref dataBmp);
+
+                            this.lastMagHnd = dataBmp.GetHbitmap();
+
+                            Application.Current.Dispatcher.Invoke(() =>
+                            this.magImg.Source = Imaging.CreateBitmapSourceFromHBitmap(this.lastMagHnd,
+                                 IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()));
+                        }
+                    });
+                }
             }
         }
 
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
             this.WindowState = WindowState.Maximized;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.magnifying = false;
         }
     }
 }
