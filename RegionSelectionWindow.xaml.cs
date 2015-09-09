@@ -30,7 +30,7 @@ namespace SIClient
             this.scr = new ScreenshotTaker();
         }
 
-        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (!this.selStarted)
             {
@@ -43,7 +43,7 @@ namespace SIClient
             }
         }
 
-        private void Window_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (this.selStarted)
             {
