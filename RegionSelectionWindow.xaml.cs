@@ -48,7 +48,10 @@ namespace SIClient
             if (this.selStarted)
             {
                 this.Hide();
-                this.RegionSelected?.Invoke((int)(this.start.X > this.local.X ? this.local.X : this.start.X),
+                this.start = this.PointToScreen(this.start);
+                this.local = this.PointToScreen(this.local);
+                this.RegionSelected?.Invoke(
+                    (int)(this.start.X > this.local.X ? this.local.X : this.start.X),
                     (int)(this.start.Y > this.local.Y ? this.local.Y : this.start.Y),
                     (int)(this.start.X > this.local.X ? this.start.X : this.local.X),
                     (int)(this.start.Y > this.local.Y ? this.start.Y : this.local.Y));

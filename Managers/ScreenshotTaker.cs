@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
+﻿using FMUtils.Screenshot;
+using System.Drawing;
 using System.Windows;
 
 namespace SIClient
@@ -8,25 +8,19 @@ namespace SIClient
     {
         public Bitmap GetScreenshot()
         {
-            Bitmap bmp = new Bitmap((int)SystemParameters.VirtualScreenWidth,
-                (int)SystemParameters.VirtualScreenHeight, PixelFormat.Format32bppArgb);
+            var screen = new ComposedScreenshot(new Rectangle((int)SystemParameters.VirtualScreenLeft, (int)SystemParameters.VirtualScreenTop,
+               (int)SystemParameters.VirtualScreenWidth, (int)SystemParameters.VirtualScreenHeight));
+            screen.withCursor = true;
 
-            this.CopyScreen((int)SystemParameters.VirtualScreenLeft, (int)SystemParameters.VirtualScreenTop, ref bmp);
-            return bmp;
+            return screen.ComposedScreenshotImage;
         }
 
         public Bitmap GetScreenshot(int x0, int y0, int x1, int y1)
         {
-            try
-            {
-                Bitmap bmp = new Bitmap(x1 - x0, y1 - y0, PixelFormat.Format32bppArgb);
-                this.CopyScreen(x0, y0, ref bmp);
-                return bmp;
-            }
-            catch
-            {
-                return null;
-            }
+            var screen = new ComposedScreenshot(new Rectangle(x0, y0, x1 - x0, y1 - y0));
+            screen.withCursor = true;
+
+            return screen.ComposedScreenshotImage;
         }
 
         public void CopyScreen(int x, int y, ref Bitmap dataBmp)

@@ -33,8 +33,7 @@ namespace SIClient
 
         public void WholescreenScreenshot()
         {
-            var s = this.scr.GetScreenshot();
-            this.UploadScreenshot(s);
+            this.UploadScreenshot(this.scr.GetScreenshot());
         }
 
         public void RegionScreenshot()
@@ -54,8 +53,7 @@ namespace SIClient
 
         private void RegionSelected(int x0, int y0, int x1, int y1)
         {
-            var s = this.scr.GetScreenshot(x0, y0, x1, y1);
-            this.UploadScreenshot(s);
+            this.UploadScreenshot(this.scr.GetScreenshot(x0, y0, x1, y1));
         }
 
         public void WindowScreenshot()
@@ -80,8 +78,7 @@ namespace SIClient
                     r.Right -= 7;
                 }
 
-                var s = this.scr.GetScreenshot(r.Left, r.Top, r.Right, r.Bottom);
-                this.UploadScreenshot(s);
+                this.UploadScreenshot(this.scr.GetScreenshot(r.Left, r.Top, r.Right, r.Bottom));
             }
         }
 

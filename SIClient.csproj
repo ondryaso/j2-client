@@ -63,6 +63,14 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FMUtils.Screenshot, Version=1.0.668.1805, Culture=neutral, PublicKeyToken=7e686a1e3bab10bf, processorArchitecture=MSIL">
+      <HintPath>..\packages\FMUtils.Screenshot.1.0.668.1805\lib\net40-Client\FMUtils.Screenshot.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FMUtils.WinApi, Version=1.0.11.2341, Culture=neutral, PublicKeyToken=b82e41506fce6235, processorArchitecture=MSIL">
+      <HintPath>..\packages\FMUtils.WinApi.1.0.11.2341\lib\net40-Client\FMUtils.WinApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
       <Private>True</Private>
@@ -180,6 +188,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\context-bottom-right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
