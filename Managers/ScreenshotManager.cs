@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
-using System.Windows;
+using System.Windows.Interop;
 using static SIClient.NativeDefinitions;
 using static SIClient.NativeMethods;
 
@@ -41,20 +41,24 @@ namespace SIClient
         {
             var regSelect = new RegionSelectionWindow();
 
-            regSelect.Left = SystemParameters.VirtualScreenLeft;
-            regSelect.Top = SystemParameters.VirtualScreenTop;
-            regSelect.Width = SystemParameters.VirtualScreenWidth;
-            regSelect.Height = SystemParameters.VirtualScreenHeight;
-
             regSelect.RegionSelected += RegionSelected;
             regSelect.Show();
             regSelect.Activate();
             regSelect.Focus();
+
+            ManagedRect r;
+            var hwnd = new WindowInteropHelper(regSelect).Handle;
+
+            if (GetWindowRect(hwnd, out r))
+            {
+                regSelect.XOffset = r.Left;
+                regSelect.YOffset = r.Top;
+            }
         }
 
-        private void RegionSelected(int x0, int y0, int x1, int y1)
+        private void RegionSelected(int x0, int y0, int x1, int y1, int xo, int yo)
         {
-            var s = this.scr.GetScreenshot(x0, y0, x1, y1);
+            var s = this.scr.GetScreenshot(x0 + xo, y0 + yo, x1 + xo, y1 + yo);
             this.UploadScreenshot(s);
         }
 

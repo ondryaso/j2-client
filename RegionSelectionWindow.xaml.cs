@@ -14,7 +14,7 @@ namespace SIClient
     /// </summary>
     public partial class RegionSelectionWindow : Window
     {
-        public event Action<int, int, int, int> RegionSelected;
+        public event Action<int, int, int, int, int, int> RegionSelected;
 
         private bool selStarted = false;
         private bool magnifying = false;
@@ -22,6 +22,9 @@ namespace SIClient
         private System.Windows.Point local;
         private ScreenshotTaker scr;
         private IntPtr lastMagHnd;
+
+        public int XOffset { get; set; }
+        public int YOffset { get; set; }
 
         public RegionSelectionWindow()
         {
@@ -51,7 +54,8 @@ namespace SIClient
                 this.RegionSelected?.Invoke((int)(this.start.X > this.local.X ? this.local.X : this.start.X),
                     (int)(this.start.Y > this.local.Y ? this.local.Y : this.start.Y),
                     (int)(this.start.X > this.local.X ? this.start.X : this.local.X),
-                    (int)(this.start.Y > this.local.Y ? this.start.Y : this.local.Y));
+                    (int)(this.start.Y > this.local.Y ? this.start.Y : this.local.Y),
+                    this.XOffset, this.YOffset);
                 this.Close();
             }
         }
@@ -119,7 +123,7 @@ namespace SIClient
                                 NativeMethods.DeleteObject(this.lastMagHnd);
 
                             Bitmap dataBmp = new Bitmap(10, 10, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                            this.scr.CopyScreen((int)this.local.X - 5, (int)this.local.Y - 5, ref dataBmp);
+                            this.scr.CopyScreen((int)this.local.X - 5 + this.XOffset, (int)this.local.Y - 5 + this.YOffset, ref dataBmp);
 
                             this.lastMagHnd = dataBmp.GetHbitmap();
 
