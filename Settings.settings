@@ -20,5 +20,8 @@
     <Setting Name="TcpAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">tcp://piko.ondryaso.eu:1337</Value>
     </Setting>
+    <Setting Name="EnableTcp" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

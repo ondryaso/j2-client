@@ -222,13 +222,42 @@ namespace SIClient
 
         private void ChangeTcpServerAddress(String addr)
         {
-            if (Uri.IsWellFormedUriString(addr, UriKind.Absolute))
+            if (Settings.Default.EnableTcp)
             {
-                this.client.TcpAddress = new Uri(addr);
+                if (Uri.IsWellFormedUriString(addr, UriKind.Absolute))
+                {
+                    this.client.TcpAddress = new Uri(addr);
+                }
+                else
+                {
+                    this.client.ForceHttp();
+                }
             }
-            else
+        }
+
+        private bool enableTcp = Settings.Default.EnableTcp;
+
+        public bool EnableTcpAddress
+        {
+            get
             {
-                this.client.ForceHttp();
+                return this.enableTcp;
+            }
+            set
+            {
+                if (this.SetField(ref this.enableTcp, value))
+                {
+                    Settings.Default.EnableTcp = this.enableTcp;
+
+                    if (value)
+                    {
+                        this.ChangeTcpServerAddress(Settings.Default.TcpAddress);
+                    }
+                    else
+                    {
+                        this.client.ForceHttp();
+                    }
+                }
             }
         }
 

@@ -94,5 +94,17 @@ namespace SIClient {
                 this["TcpAddress"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnableTcp {
+            get {
+                return ((bool)(this["EnableTcp"]));
+            }
+            set {
+                this["EnableTcp"] = value;
+            }
+        }
     }
 }
