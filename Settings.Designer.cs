@@ -61,7 +61,7 @@ namespace SIClient {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://home.ondryaso.eu")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://piko.ondryaso.eu")]
         public string Address {
             get {
                 return ((string)(this["Address"]));
@@ -80,6 +80,18 @@ namespace SIClient {
             }
             set {
                 this["ResponseManagerName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("tcp://piko.ondryaso.eu:1337")]
+        public string TcpAddress {
+            get {
+                return ((string)(this["TcpAddress"]));
+            }
+            set {
+                this["TcpAddress"] = value;
             }
         }
     }

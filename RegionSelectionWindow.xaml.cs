@@ -14,7 +14,17 @@ namespace SIClient
     /// </summary>
     public partial class RegionSelectionWindow : Window
     {
-        public event Action<int, int, int, int, int, int> RegionSelected;
+        public class RegionSelectedEventArgs : EventArgs
+        {
+            public int X0 { get; set; }
+            public int Y0 { get; set; }
+            public int X1 { get; set; }
+            public int Y1 { get; set; }
+            public int XOffset { get; set; }
+            public int YOffset { get; set; }
+        }
+
+        public event Action<RegionSelectedEventArgs, object> RegionSelected;
 
         private bool selStarted = false;
         private bool magnifying = false;
@@ -51,11 +61,15 @@ namespace SIClient
             if (this.selStarted)
             {
                 this.Hide();
-                this.RegionSelected?.Invoke((int)(this.start.X > this.local.X ? this.local.X : this.start.X),
-                    (int)(this.start.Y > this.local.Y ? this.local.Y : this.start.Y),
-                    (int)(this.start.X > this.local.X ? this.start.X : this.local.X),
-                    (int)(this.start.Y > this.local.Y ? this.start.Y : this.local.Y),
-                    this.XOffset, this.YOffset);
+                this.RegionSelected?.Invoke(new RegionSelectedEventArgs()
+                {
+                    X0 = (int)(this.start.X > this.local.X ? this.local.X : this.start.X),
+                    Y0 = (int)(this.start.Y > this.local.Y ? this.local.Y : this.start.Y),
+                    X1 = (int)(this.start.X > this.local.X ? this.start.X : this.local.X),
+                    Y1 = (int)(this.start.Y > this.local.Y ? this.start.Y : this.local.Y),
+                    XOffset = this.XOffset,
+                    YOffset = this.YOffset
+                }, this);
                 this.Close();
             }
         }

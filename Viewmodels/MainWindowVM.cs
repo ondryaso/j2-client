@@ -1,7 +1,7 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Win32;
 using NHotkey.Wpf;
-using SIClient.Net;
+using SIClient.Managers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,9 +13,11 @@ namespace SIClient
 {
     internal class MainWindowVM : INotifyPropertyChanged, IDisposable
     {
-        private NetClient client;
+        private NetClientSelector client;
         private readonly ScreenshotManager screen;
         private RegistryKey regKey;
+
+        #region ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -37,12 +39,19 @@ namespace SIClient
             this.OnPropertyChanged(propertyName);
         }
 
+        #endregion ViewModel
+
         public MainWindowVM()
         {
-            this.client = new NetClient(Settings.Default.Address);
-            this.client.DefaultResponseManagerName = Settings.Default.ResponseManagerName;
+            this.client = new NetClientSelector();
+            this.screen = new ScreenshotManager();
 
-            this.screen = new ScreenshotManager(this.client);
+            this.client.OnClientChanged += OnClientChanged;
+            this.ChangeServerAddress(Settings.Default.Address);
+            this.ChangeTcpServerAddress(Settings.Default.TcpAddress);
+
+            this.client.HttpClient.DefaultResponseManagerName = Settings.Default.ResponseManagerName;
+
             this.screen.ScreenshotDone += this.NotifyScreenshotDone;
 
             this.InitKeys();
@@ -50,7 +59,7 @@ namespace SIClient
 
         private void NotifyScreenshotDone(string name)
         {
-            var link = this.client.ServerAddress + name;
+            var link = this.client.HttpClient.ServerAddress + "i" + name;
 
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -180,10 +189,54 @@ namespace SIClient
                 if (this.SetField(ref addr, value))
                 {
                     Settings.Default.Address = addr;
-
-                    if (Uri.IsWellFormedUriString(value, UriKind.Absolute))
-                        this.client.ServerAddress = value;
+                    this.ChangeServerAddress(value);
                 }
+            }
+        }
+
+        private void ChangeServerAddress(String addr)
+        {
+            if (Uri.IsWellFormedUriString(addr, UriKind.Absolute))
+            {
+                this.client.HttpAddress = addr;
+            }
+        }
+
+        public string TcpServerAddress
+        {
+            get
+            {
+                return Settings.Default.TcpAddress;
+            }
+
+            set
+            {
+                String addr = Settings.Default.TcpAddress;
+                if (this.SetField(ref addr, value))
+                {
+                    Settings.Default.TcpAddress = addr;
+                    this.ChangeTcpServerAddress(value);
+                }
+            }
+        }
+
+        private void ChangeTcpServerAddress(String addr)
+        {
+            if (Uri.IsWellFormedUriString(addr, UriKind.Absolute))
+            {
+                this.client.TcpAddress = new Uri(addr);
+            }
+            else
+            {
+                this.client.ForceHttp();
+            }
+        }
+
+        private void OnClientChanged(NetClientSelector.ClientChangedEventArgs e, object sender)
+        {
+            lock (sender)
+            {
+                this.screen.Client = e.Client;
             }
         }
     }

@@ -17,12 +17,13 @@ namespace SIClient
         public event Action<String> ScreenshotDone;
 
         private bool isW10;
-        private NetClient client;
+        private INetClient client;
         private ScreenshotTaker scr;
 
-        public ScreenshotManager(NetClient c)
+        internal INetClient Client { set { this.client = value; } }
+
+        public ScreenshotManager()
         {
-            this.client = c;
             this.scr = new ScreenshotTaker();
 
             // .NET methods return Windows 8 info on Windows 10, so we need to use WMI
@@ -56,9 +57,9 @@ namespace SIClient
             }
         }
 
-        private void RegionSelected(int x0, int y0, int x1, int y1, int xo, int yo)
+        private void RegionSelected(RegionSelectionWindow.RegionSelectedEventArgs e, object sender)
         {
-            var s = this.scr.GetScreenshot(x0 + xo, y0 + yo, x1 + xo, y1 + yo);
+            var s = this.scr.GetScreenshot(e.X0 + e.XOffset, e.Y0 + e.YOffset, e.X1 + e.XOffset, e.Y1 + e.YOffset);
             this.UploadScreenshot(s);
         }
 
