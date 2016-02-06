@@ -16,6 +16,7 @@ namespace SIClient
         private NetClientSelector client;
         private readonly ScreenshotManager screen;
         private RegistryKey regKey;
+        private bool uploadingOne = false;
 
         #region ViewModel
 
@@ -53,8 +54,29 @@ namespace SIClient
             this.client.HttpClient.DefaultResponseManagerName = Settings.Default.ResponseManagerName;
 
             this.screen.ScreenshotDone += this.NotifyScreenshotDone;
+            this.screen.Error += NotifyScreenshotError;
 
-            this.InitKeys();
+            var args = Environment.GetCommandLineArgs();
+            if (args != null && args.Length >= 3 && args[1] == "-u")
+            {
+                this.uploadingOne = true;
+                this.screen.UploadFile(args[2]);
+            }
+            else
+            {
+                this.InitKeys();
+            }
+        }
+
+        private void NotifyScreenshotError(string errorMsg)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ((TaskbarIcon)Application.Current.FindResource("notifyicon")).ShowBalloonTip("Error uploading", errorMsg, BalloonIcon.Info);
+            });
+
+            if (this.uploadingOne)
+                Environment.Exit(0);
         }
 
         private void NotifyScreenshotDone(string name)
@@ -66,6 +88,9 @@ namespace SIClient
                 Clipboard.SetText(link);
                 ((TaskbarIcon)Application.Current.FindResource("notifyicon")).ShowBalloonTip("Uploaded", link, BalloonIcon.Info);
             });
+
+            if (this.uploadingOne)
+                Environment.Exit(0);
         }
 
         private void InitKeys(bool window = true, bool whole = true, bool area = true)

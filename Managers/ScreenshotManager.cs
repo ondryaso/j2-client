@@ -16,6 +16,8 @@ namespace SIClient
     {
         public event Action<String> ScreenshotDone;
 
+        public event Action<String> Error;
+
         private bool isW10;
         private INetClient client;
         private ScreenshotTaker scr;
@@ -90,11 +92,24 @@ namespace SIClient
             }
         }
 
+        public void UploadFile(string fileName)
+        {
+            try
+            {
+                Image img = Image.FromFile(fileName);
+                this.UploadScreenshot(img);
+            }
+            catch
+            {
+                this.Error?.Invoke("File is not an image. Sry m8");
+            }
+        }
+
         #endregion Toplevel screenshot methods
 
         #region Screenshot management
 
-        private void UploadScreenshot(Bitmap s)
+        private void UploadScreenshot(Image s)
         {
             if (s != null)
             {
@@ -102,13 +117,24 @@ namespace SIClient
 
                 Task.Run(async () =>
                 {
-                    var name = await this.client.UploadImageAsync(b);
-                    this.ScreenshotDone?.Invoke(name);
+                    try
+                    {
+                        var name = await this.client.UploadImageAsync(b);
+                        this.ScreenshotDone?.Invoke(name);
+                    }
+                    catch (Exception e)
+                    {
+                        this.Error?.Invoke(e.Message);
+                    }
                 });
+            }
+            else
+            {
+                this.Error?.Invoke("Error, I don't understand :(");
             }
         }
 
-        private byte[] GetImageBytes(Bitmap b)
+        private byte[] GetImageBytes(Image b)
         {
             byte[] buf;
 

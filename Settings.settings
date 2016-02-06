@@ -21,7 +21,7 @@
       <Value Profile="(Default)">tcp://piko.ondryaso.eu:1337</Value>
     </Setting>
     <Setting Name="EnableTcp" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
